@@ -11,44 +11,12 @@
       "request": "launch",
       "type": "cortex-debug",
       "servertype": "openocd",
-      "serverpath": "${workspaceFolder}/${input:openocd-path}",
-      "svdFile": "${workspaceFolder}/${input:svd-path}",
+      "serverpath": "${workspaceFolder}/tools/openocd/build/bin/openocd",
+      "svdFile": "${workspaceFolder}/build/debug/target.svd",
       "configFiles": [
-        "${workspaceFolder}/${input:openocd-debug-cfg}"
+        "${workspaceFolder}/build/debug/target.cfg"
       ],
       "preLaunchTask": "target-debug-deps"
-    }
-  ],
-  "inputs": [
-    {
-      "id": "openocd-path",
-      "type": "command",
-      "command": "shellCommand.execute",
-      "args": {
-        "command": "make openocd-path",
-        "cwd": "${workspaceFolder}",
-        "useFirstResult": true
-      }
-    },
-    {
-      "id": "svd-path",
-      "type": "command",
-      "command": "shellCommand.execute",
-      "args": {
-        "command": "make svd-path",
-        "cwd": "${workspaceFolder}",
-        "useFirstResult": true
-      }
-    },
-    {
-      "id": "openocd-debug-cfg",
-      "type": "command",
-      "command": "shellCommand.execute",
-      "args": {
-        "command": "make openocd-debug-cfg",
-        "cwd": "${workspaceFolder}",
-        "useFirstResult": true
-      }
     }
   ]
 }

@@ -34,18 +34,8 @@ erase:
 
 .PHONY: debug-deps
 debug-deps: tools/openocd/build/bin/openocd all
-
-.PHONY: openocd-path
-openocd-path:
-	@echo tools/openocd/build/bin/openocd
-
-.PHONY: svd-path
-svd-path:
-	@echo $(SVD)
-
-.PHONY: openocd-debug-cfg
-openocd-debug-cfg:
-	@echo $(DEBUG_CFG)
+	cp $(SVD) build/$(BUILD_TYPE)/target.svd
+	cp $(DEBUG_CFG) build/$(BUILD_TYPE)/target.cfg
 
 .PHONY: test
 test:
