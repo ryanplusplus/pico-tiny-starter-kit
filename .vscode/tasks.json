@@ -12,7 +12,7 @@
         "reveal": "silent",
         "focus": false,
         "panel": "shared",
-        "showReuseMessage": true,
+        "showReuseMessage": false,
         "clear": false
       }
     }

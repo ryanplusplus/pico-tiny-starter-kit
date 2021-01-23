@@ -1,3 +1,6 @@
+SVD := lib/pico-sdk/src/rp2040/hardware_regs/rp2040.svd
+DEBUG_CFG := tools/debug.cfg
+
 export GNUMAKEFLAGS := --no-print-directory
 
 ifeq ($(DEBUG),Y)
@@ -31,6 +34,18 @@ erase:
 
 .PHONY: debug-deps
 debug-deps: tools/openocd/build/bin/openocd all
+
+.PHONY: openocd-path
+openocd-path:
+	@echo tools/openocd/build/bin/openocd
+
+.PHONY: svd-path
+svd-path:
+	@echo $(SVD)
+
+.PHONY: openocd-debug-cfg
+openocd-debug-cfg:
+	@echo $(DEBUG_CFG)
 
 .PHONY: test
 test:
