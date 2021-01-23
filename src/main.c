@@ -3,7 +3,14 @@
 
 int main()
 {
-  setup_default_uart();
-  printf("Hello, world!\n");
-  return 0;
+  const unsigned LED_PIN = 28;
+  gpio_init(LED_PIN);
+  gpio_set_dir(LED_PIN, GPIO_OUT);
+
+  while(1) {
+    gpio_put(LED_PIN, 1);
+    sleep_ms(500);
+    gpio_put(LED_PIN, 0);
+    sleep_ms(500);
+  }
 }
