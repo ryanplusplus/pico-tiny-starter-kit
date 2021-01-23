@@ -4,14 +4,24 @@ cmake_minimum_required(VERSION 3.12)
 # note: this must happen before project()
 include(lib/pico-sdk/pico_sdk_init.cmake)
 
-project(tiny)
+project(rpi_pico)
 
 # initialize the Pico SDK
 pico_sdk_init()
 
-add_executable(target
-  src/main.c
+include_directories(
+  lib/tiny/include
+  src
 )
+
+set(target_SRC
+  lib/tiny/src/tiny_list.c
+  lib/tiny/src/tiny_timer.c
+  src/main.c
+  src/tiny_time_source.c
+)
+
+add_executable(target ${target_SRC})
 
 # Add pico_stdlib library which aggregates commonly used features
 target_link_libraries(target pico_stdlib)

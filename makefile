@@ -32,6 +32,10 @@ erase:
 .PHONY: debug-deps
 debug-deps: tools/openocd/build/bin/openocd all
 
+.PHONY: test
+test:
+	@$(MAKE) --no-print-directory -f test.mk
+
 tools/openocd/build/bin/openocd:
 	@git clone https://github.com/raspberrypi/openocd.git --recursive --branch rp2040 --depth=1 tools/openocd
 	@(cd tools/openocd; ./bootstrap && ./configure --prefix=`pwd`/build && $(MAKE) && $(MAKE) install)
