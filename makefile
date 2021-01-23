@@ -1,16 +1,22 @@
 export GNUMAKEFLAGS := --no-print-directory
-CMAKE := cmake --build build
+
+ifeq ($(DEBUG),Y)
+CMAKE_FLAGS := -DCMAKE_BUILD_TYPE=Debug
+BUILD_DIR := debug
+else
+BUILD_DIR := release
+endif
 
 .PHONY: all
-all: build/Makefile
-	@+$(CMAKE)
+all: build/$(BUILD_DIR)/Makefile
+	@+cmake --build build/$(BUILD_DIR)
 
-build/Makefile:
-	@+cmake -B build .
+build/$(BUILD_DIR)/Makefile:
+	@+cmake $(CMAKE_FLAGS) -B build/$(BUILD_DIR) .
 
 .PHONY: clean
 clean:
 	@rm -rf build
 
 %:
-	@+$(CMAKE) --target $@
+	@+cmake --build build/$(BUILD_DIR) --target $@
