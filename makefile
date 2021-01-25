@@ -9,12 +9,12 @@ CMAKE_FLAGS := \
   -DPICO_BOARD=$(PICO_BOARD) \
   -DPICO_COMPILER=$(PICO_COMPILER) \
 
-ifeq ($(DEBUG),Y)
-CMAKE_FLAGS += -DCMAKE_BUILD_TYPE=Debug
-BUILD_TYPE := debug
-else
+ifeq ($(RELEASE),Y)
 CMAKE_FLAGS += -DCMAKE_BUILD_TYPE=Release
 BUILD_TYPE := release
+else
+CMAKE_FLAGS += -DCMAKE_BUILD_TYPE=Debug
+BUILD_TYPE := debug
 endif
 
 export GNUMAKEFLAGS := --no-print-directory
