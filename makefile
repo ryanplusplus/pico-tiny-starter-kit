@@ -34,11 +34,11 @@ clean:
 	@+cmake --build build/$(BUILD_TYPE) --target $@
 
 .PHONY: upload
-upload: all
+upload: all tools/openocd/build/bin/openocd
 	tools/openocd/build/bin/openocd -f tools/upload-$(BUILD_TYPE).cfg
 
 .PHONY: erase
-erase:
+erase: tools/openocd/build/bin/openocd
 	tools/openocd/build/bin/openocd -f tools/erase.cfg
 
 .PHONY: debug-deps
@@ -51,5 +51,5 @@ test:
 	@$(MAKE) --no-print-directory -f test.mk
 
 tools/openocd/build/bin/openocd:
-	@git clone https://github.com/raspberrypi/openocd.git --recursive --branch rp2040 --depth=1 tools/openocd
+	@git clone https://github.com/raspberrypi/openocd.git --recursive --branch rp2040_jlink --depth=1 tools/openocd
 	@(cd tools/openocd; ./bootstrap && ./configure --prefix=`pwd`/build && $(MAKE) && $(MAKE) install)
