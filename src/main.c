@@ -9,7 +9,7 @@
 #include "tiny_time_source.h"
 #include "tiny_timer.h"
 
-static const unsigned LED_PIN = 28;
+static const unsigned LED_PIN = PICO_DEFAULT_LED_PIN;
 
 static void blink(tiny_timer_group_t* group, void* context)
 {
