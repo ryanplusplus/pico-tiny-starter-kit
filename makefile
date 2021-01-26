@@ -51,5 +51,6 @@ test:
 	@$(MAKE) --no-print-directory -f test.mk
 
 tools/openocd/build/bin/openocd:
+	@rm -rf tools/openocd
 	@git clone https://github.com/raspberrypi/openocd.git --recursive --branch rp2040_jlink --depth=1 tools/openocd
 	@(cd tools/openocd; ./bootstrap && ./configure --prefix=`pwd`/build && $(MAKE) && $(MAKE) install)
