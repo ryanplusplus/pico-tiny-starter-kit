@@ -4,3 +4,6 @@
 [submodule "lib/tiny"]
 	path = lib/tiny
 	url = https://github.com/ryanplusplus/tiny
+[submodule "lib/tiny-devices"]
+	path = lib/tiny-devices
+	url = https://github.com/ryanplusplus/tiny-devices
