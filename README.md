@@ -21,3 +21,8 @@ make upload
 ```shell
 make test
 ```
+
+## Resources
+- [RP2040 Datasheet](https://datasheets.raspberrypi.org/rp2040/rp2040-datasheet.pdf)
+- [Pico Datasheet](https://datasheets.raspberrypi.org/pico/pico-datasheet.pdf)
+- [Pico C/C++ SDK](https://datasheets.raspberrypi.org/pico/raspberry-pi-pico-c-sdk.pdf)
