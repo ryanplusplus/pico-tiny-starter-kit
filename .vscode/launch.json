@@ -10,12 +10,9 @@
       "executable": "${workspaceFolder}/build/debug/target.elf",
       "request": "launch",
       "type": "cortex-debug",
-      "servertype": "openocd",
-      "serverpath": "${workspaceFolder}/tools/openocd/build/bin/openocd",
+      "servertype": "jlink",
+      "device": "RP2040_M0_0",
       "svdFile": "${workspaceFolder}/build/debug/target.svd",
-      "configFiles": [
-        "${workspaceFolder}/build/debug/target.cfg"
-      ],
       "preLaunchTask": "target-debug-deps"
     }
   ]

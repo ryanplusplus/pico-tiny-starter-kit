@@ -34,23 +34,34 @@ clean:
 	@+cmake --build build/$(BUILD_TYPE) --target $@
 
 .PHONY: upload
-upload: all tools/openocd/build/bin/openocd
-	tools/openocd/build/bin/openocd -f tools/upload-$(BUILD_TYPE).cfg
+upload: build/$(BUILD_TYPE)/upload.jlink all
+	@JLinkExe -device RP2040_M0_0 -if SWD -autoconnect 1 -speed 4000 -CommandFile $<
+
+.PHONY: build/$(BUILD_TYPE)/upload.jlink
+build/$(BUILD_TYPE)/upload.jlink:
+	@mkdir -p $(dir $@)
+	@echo r > $@
+	@echo h >> $@
+	@echo loadfile build/$(BUILD_TYPE)/target.hex >> $@
+	@echo r >> $@
+	@echo exit >> $@
 
 .PHONY: erase
-erase: tools/openocd/build/bin/openocd
-	tools/openocd/build/bin/openocd -f tools/erase.cfg
+erase: build/$(BUILD_TYPE)/erase.jlink
+	@JLinkExe -device RP2040_M0_0 -if SWD -autoconnect 1 -speed 4000 -CommandFile $<
+
+.PHONY: build/$(BUILD_TYPE)/erase.jlink
+build/$(BUILD_TYPE)/erase.jlink:
+	@mkdir -p $(dir $@)
+	@echo r > $@
+	@echo h >> $@
+	@echo erase >> $@
+	@echo exit >> $@
 
 .PHONY: debug-deps
-debug-deps: tools/openocd/build/bin/openocd all
+debug-deps: all
 	cp $(SVD) build/$(BUILD_TYPE)/target.svd
-	cp $(DEBUG_CFG) build/$(BUILD_TYPE)/target.cfg
 
 .PHONY: test
 test:
 	@$(MAKE) --no-print-directory -f test.mk
-
-tools/openocd/build/bin/openocd:
-	@rm -rf tools/openocd
-	@git clone https://github.com/raspberrypi/openocd.git --recursive --branch rp2040_jlink --depth=1 tools/openocd
-	@(cd tools/openocd; ./bootstrap && ./configure --prefix=`pwd`/build && $(MAKE) && $(MAKE) install)
