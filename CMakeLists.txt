@@ -17,6 +17,7 @@ include_directories(
 set(target_SRC
   lib/tiny/src/tiny_list.c
   lib/tiny/src/tiny_timer.c
+  src/heartbeat.c
   src/main.c
   src/tiny_i2c.c
   src/tiny_spi.c
