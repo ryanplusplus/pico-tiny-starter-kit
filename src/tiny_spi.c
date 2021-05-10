@@ -8,11 +8,13 @@
 
 static void transfer(
   i_tiny_spi_t* _self,
-  const uint8_t* write_buffer,
-  uint8_t* read_buffer,
+  const void* _write_buffer,
+  void* _read_buffer,
   uint16_t buffer_size)
 {
   reinterpret(self, _self, tiny_spi_t*);
+  reinterpret(write_buffer, _write_buffer, const uint8_t*);
+  reinterpret(read_buffer, _read_buffer, uint8_t*);
 
   if(read_buffer && write_buffer) {
     (void)spi_write_read_blocking(self->spi, write_buffer, read_buffer, buffer_size);

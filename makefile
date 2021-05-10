@@ -8,6 +8,8 @@ CMAKE_FLAGS := \
   -DPICO_PLATFORM=$(PICO_PLATFORM) \
   -DPICO_BOARD=$(PICO_BOARD) \
   -DPICO_COMPILER=$(PICO_COMPILER) \
+  -DCMAKE_C_COMPILER=$(shell which arm-none-eabi-gcc) \
+  -DCMAKE_CXX_COMPILER=$(shell which arm-none-eabi-g++) \
 
 ifeq ($(RELEASE),Y)
 CMAKE_FLAGS += -DCMAKE_BUILD_TYPE=Release

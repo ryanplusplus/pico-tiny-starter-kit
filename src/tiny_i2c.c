@@ -11,7 +11,7 @@ static bool write(
   i_tiny_i2c_t* _self,
   uint8_t address,
   bool prepare_for_restart,
-  const uint8_t* buffer,
+  const void* buffer,
   uint16_t buffer_size)
 {
   reinterpret(self, _self, tiny_i2c_t*);
@@ -19,7 +19,7 @@ static bool write(
   int result = i2c_write_blocking(
     self->i2c,
     address,
-    buffer,
+    (const uint8_t*)buffer,
     buffer_size,
     prepare_for_restart);
 
@@ -30,7 +30,7 @@ static bool read(
   i_tiny_i2c_t* _self,
   uint8_t address,
   bool prepare_for_restart,
-  uint8_t* buffer,
+  void* buffer,
   uint16_t buffer_size)
 {
   reinterpret(self, _self, tiny_i2c_t*);
@@ -38,7 +38,7 @@ static bool read(
   int result = i2c_read_blocking(
     self->i2c,
     address,
-    buffer,
+    (uint8_t*)buffer,
     buffer_size,
     prepare_for_restart);
 
