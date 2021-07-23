@@ -1,9 +1,9 @@
-[submodule "lib/pico-sdk"]
-	path = lib/pico-sdk
-	url = https://github.com/raspberrypi/pico-sdk
 [submodule "lib/tiny"]
 	path = lib/tiny
 	url = https://github.com/ryanplusplus/tiny
 [submodule "lib/tiny-devices"]
 	path = lib/tiny-devices
 	url = https://github.com/ryanplusplus/tiny-devices
+[submodule "lib/pico-sdk"]
+	path = lib/pico-sdk
+	url = https://github.com/raspberrypi/pico-sdk
