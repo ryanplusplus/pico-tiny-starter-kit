@@ -6,7 +6,7 @@
     {
       "label": "target-debug-deps",
       "type": "shell",
-      "command": "make -j`nproc` debug-deps",
+      "command": "make -j debug-deps",
       "presentation": {
         "echo": true,
         "reveal": "silent",
