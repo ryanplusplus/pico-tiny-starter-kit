@@ -35,8 +35,12 @@ clean:
 %:
 	@+cmake --build build/$(BUILD_TYPE) --target $@
 
+.PHONY: suppress-jlink-edu-popup
+suppress-jlink-edu-popup:
+	@type lua > /dev/null 2>&1 && lua script/suppress-jlink-edu-popup.lua > /dev/null 2>&1 || true
+
 .PHONY: upload
-upload: build/$(BUILD_TYPE)/upload.jlink all
+upload: build/$(BUILD_TYPE)/upload.jlink all suppress-jlink-edu-popup
 	@JLinkExe -device RP2040_M0_0 -if SWD -autoconnect 1 -speed 4000 -CommandFile $<
 
 .PHONY: build/$(BUILD_TYPE)/upload.jlink
@@ -49,7 +53,7 @@ build/$(BUILD_TYPE)/upload.jlink:
 	@echo exit >> $@
 
 .PHONY: erase
-erase: build/$(BUILD_TYPE)/erase.jlink
+erase: build/$(BUILD_TYPE)/erase.jlink suppress-jlink-edu-popup
 	@JLinkExe -device RP2040_M0_0 -if SWD -autoconnect 1 -speed 4000 -CommandFile $<
 
 .PHONY: build/$(BUILD_TYPE)/erase.jlink
@@ -61,8 +65,8 @@ build/$(BUILD_TYPE)/erase.jlink:
 	@echo exit >> $@
 
 .PHONY: debug-deps
-debug-deps: all
-	cp $(SVD) build/$(BUILD_TYPE)/target.svd
+debug-deps: all suppress-jlink-edu-popup
+	@cp $(SVD) build/$(BUILD_TYPE)/target.svd
 
 .PHONY: test
 test:
