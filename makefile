@@ -1,7 +1,7 @@
 SVD := lib/pico-sdk/src/rp2040/hardware_regs/rp2040.svd
 DEBUG_CFG := tools/debug.cfg
 PICO_PLATFORM := rp2040
-PICO_BOARD := pico
+PICO_BOARD := adafruit_feather_rp2040
 PICO_COMPILER := pico_arm_gcc
 
 CMAKE_FLAGS := \
@@ -41,7 +41,7 @@ suppress-jlink-edu-popup:
 
 .PHONY: upload
 upload: build/$(BUILD_TYPE)/upload.jlink all suppress-jlink-edu-popup
-	@JLinkExe -device RP2040_M0_0 -if SWD -autoconnect 1 -speed 4000 -CommandFile $<
+	@JLinkExe -NoGui 1 -device RP2040_M0_0 -if SWD -autoconnect 1 -speed 4000 -CommandFile $<
 
 .PHONY: build/$(BUILD_TYPE)/upload.jlink
 build/$(BUILD_TYPE)/upload.jlink:
@@ -54,7 +54,7 @@ build/$(BUILD_TYPE)/upload.jlink:
 
 .PHONY: erase
 erase: build/$(BUILD_TYPE)/erase.jlink suppress-jlink-edu-popup
-	@JLinkExe -device RP2040_M0_0 -if SWD -autoconnect 1 -speed 4000 -CommandFile $<
+	@JLinkExe -NoGui 1 -device RP2040_M0_0 -if SWD -autoconnect 1 -speed 4000 -CommandFile $<
 
 .PHONY: build/$(BUILD_TYPE)/erase.jlink
 build/$(BUILD_TYPE)/erase.jlink:
