@@ -19,54 +19,60 @@ CMAKE_FLAGS += -DCMAKE_BUILD_TYPE=Debug
 BUILD_TYPE := debug
 endif
 
+BUILD_DIR := build/$(BUILD_TYPE)
+
 export GNUMAKEFLAGS := --no-print-directory
 
 .PHONY: all
-all: build/$(BUILD_TYPE)/Makefile
-	@+cmake --build build/$(BUILD_TYPE)
+all: $(BUILD_DIR)/Makefile
+	@+cmake --build $(BUILD_DIR)
 
-build/$(BUILD_TYPE)/Makefile: $(MAKEFILE_LIST)
-	@+cmake $(CMAKE_FLAGS) -B build/$(BUILD_TYPE) .
+$(BUILD_DIR)/Makefile: $(MAKEFILE_LIST)
+	@+cmake $(CMAKE_FLAGS) -B $(BUILD_DIR) .
 
 .PHONY: clean
 clean:
 	@rm -rf build
 
 %:
-	@+cmake --build build/$(BUILD_TYPE) --target $@
+	@+cmake --build $(BUILD_DIR) --target $@
 
 .PHONY: suppress-jlink-edu-popup
 suppress-jlink-edu-popup:
 	@type lua > /dev/null 2>&1 && lua script/suppress-jlink-edu-popup.lua > /dev/null 2>&1 || true
 
-.PHONY: upload
-upload: build/$(BUILD_TYPE)/upload.jlink all suppress-jlink-edu-popup
+.PHONY: jlink-upload
+jlink-upload: $(BUILD_DIR)/upload.jlink all suppress-jlink-edu-popup
 	@JLinkExe -NoGui 1 -device RP2040_M0_0 -if SWD -autoconnect 1 -speed 4000 -CommandFile $<
 
-.PHONY: build/$(BUILD_TYPE)/upload.jlink
-build/$(BUILD_TYPE)/upload.jlink:
+.PHONY: $(BUILD_DIR)/upload.jlink
+$(BUILD_DIR)/upload.jlink:
 	@mkdir -p $(dir $@)
 	@echo r > $@
 	@echo h >> $@
-	@echo loadfile build/$(BUILD_TYPE)/target.hex >> $@
+	@echo loadfile $(BUILD_DIR)/target.hex >> $@
 	@echo r >> $@
 	@echo exit >> $@
 
-.PHONY: erase
-erase: build/$(BUILD_TYPE)/erase.jlink suppress-jlink-edu-popup
+.PHONY: jlink-erase
+jlink-erase: $(BUILD_DIR)/erase.jlink suppress-jlink-edu-popup
 	@JLinkExe -NoGui 1 -device RP2040_M0_0 -if SWD -autoconnect 1 -speed 4000 -CommandFile $<
 
-.PHONY: build/$(BUILD_TYPE)/erase.jlink
-build/$(BUILD_TYPE)/erase.jlink:
+.PHONY: $(BUILD_DIR)/erase.jlink
+$(BUILD_DIR)/erase.jlink:
 	@mkdir -p $(dir $@)
 	@echo r > $@
 	@echo h >> $@
 	@echo erase >> $@
 	@echo exit >> $@
 
-.PHONY: debug-deps
-debug-deps: all suppress-jlink-edu-popup
-	@cp $(SVD) build/$(BUILD_TYPE)/target.svd
+.PHONY: jlink-debug-deps
+jlink-debug-deps: all suppress-jlink-edu-popup
+	@cp $(SVD) $(BUILD_DIR)/target.svd
+
+.PHONY: ufs-upload
+ufs-upload: all
+	@cp $(BUILD_DIR)/target.uf2 /media/ryan/RPI-RP2/
 
 .PHONY: test
 test:

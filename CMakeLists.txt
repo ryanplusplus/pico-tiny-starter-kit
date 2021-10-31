@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.12)
 # note: this must happen before project()
 include(lib/pico-sdk/pico_sdk_init.cmake)
 
-project(rpi_pico)
+project(target)
 
 # initialize the Pico SDK
 pico_sdk_init()

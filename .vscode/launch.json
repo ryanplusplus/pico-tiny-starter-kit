@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Target",
+      "name": "Target (JLink)",
       "cwd": "${workspaceRoot}",
       "executable": "${workspaceFolder}/build/debug/target.elf",
       "request": "launch",
@@ -13,7 +13,7 @@
       "servertype": "jlink",
       "device": "RP2040_M0_0",
       "svdFile": "${workspaceFolder}/build/debug/target.svd",
-      "preLaunchTask": "target-debug-deps"
+      "preLaunchTask": "target-jlink-debug-deps"
     }
   ]
 }
