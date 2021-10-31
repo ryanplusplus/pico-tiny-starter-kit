@@ -20,5 +20,5 @@ void heartbeat_init(tiny_timer_group_t* timer_group)
   gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 
   static tiny_timer_t heartbeat_timer;
-  tiny_timer_start_periodic(timer_group, &heartbeat_timer, 500, blink, NULL);
+  tiny_timer_start_periodic(timer_group, &heartbeat_timer, 500, NULL, blink);
 }
