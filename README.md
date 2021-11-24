@@ -14,7 +14,16 @@ make clean
 
 ### Upload
 ```shell
-make upload
+make jlink-upload
+```
+
+```shell
+make ufs-upload
+```
+
+### Erase
+```shell
+make jlink-erase
 ```
 
 ### Test
