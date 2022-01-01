@@ -1,7 +1,7 @@
 SVD := lib/pico-sdk/src/rp2040/hardware_regs/rp2040.svd
 DEBUG_CFG := tools/debug.cfg
 PICO_PLATFORM := rp2040
-PICO_BOARD := adafruit_feather_rp2040
+PICO_BOARD := seeed_xiao_rp2040
 PICO_COMPILER := pico_arm_gcc
 
 CMAKE_FLAGS := \
@@ -10,6 +10,7 @@ CMAKE_FLAGS := \
   -DPICO_COMPILER=$(PICO_COMPILER) \
   -DCMAKE_C_COMPILER=$(shell which arm-none-eabi-gcc) \
   -DCMAKE_CXX_COMPILER=$(shell which arm-none-eabi-g++) \
+  -DPICO_BOARD_HEADER_DIRS=$(shell pwd)/board \
 
 ifeq ($(RELEASE),Y)
 CMAKE_FLAGS += -DCMAKE_BUILD_TYPE=Release
