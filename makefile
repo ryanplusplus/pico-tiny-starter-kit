@@ -70,8 +70,8 @@ $(BUILD_DIR)/erase.jlink:
 jlink-debug-deps: all suppress-jlink-edu-popup
 	@cp $(SVD) $(BUILD_DIR)/target.svd
 
-.PHONY: ufs-upload
-ufs-upload: all
+.PHONY: uf2-upload
+uf2-upload: all
 	@cp $(BUILD_DIR)/target.uf2 /media/ryan/RPI-RP2/
 
 .PHONY: test
