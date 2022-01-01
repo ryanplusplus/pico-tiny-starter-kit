@@ -23,11 +23,7 @@ add_executable(target ${target_SRC})
 
 # Add pico_stdlib library which aggregates commonly used features
 target_link_libraries(target
-
   pico_tiny
-  pico_stdlib
-  hardware_i2c
-  hardware_spi
 )
 
 # create map/bin/hex/uf2 file in addition to ELF.
