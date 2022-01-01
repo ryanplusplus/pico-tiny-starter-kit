@@ -1,8 +1,8 @@
 SVD := lib/pico-sdk/src/rp2040/hardware_regs/rp2040.svd
-DEBUG_CFG := tools/debug.cfg
 PICO_PLATFORM := rp2040
 PICO_BOARD := seeed_xiao_rp2040
 PICO_COMPILER := pico_arm_gcc
+PICO_COPY_TO_RAM := 0
 
 CMAKE_FLAGS := \
   -DPICO_PLATFORM=$(PICO_PLATFORM) \
@@ -11,6 +11,7 @@ CMAKE_FLAGS := \
   -DCMAKE_C_COMPILER=$(shell which arm-none-eabi-gcc) \
   -DCMAKE_CXX_COMPILER=$(shell which arm-none-eabi-g++) \
   -DPICO_BOARD_HEADER_DIRS=$(shell pwd)/board \
+  -DPICO_COPY_TO_RAM=$(PICO_COPY_TO_RAM) \
 
 ifeq ($(RELEASE),Y)
 CMAKE_FLAGS += -DCMAKE_BUILD_TYPE=Release
@@ -27,6 +28,7 @@ export GNUMAKEFLAGS := --no-print-directory
 .PHONY: all
 all: $(BUILD_DIR)/Makefile
 	@+cmake --build $(BUILD_DIR)
+	@arm-none-eabi-size $(BUILD_DIR)/target.elf
 
 $(BUILD_DIR)/Makefile: $(MAKEFILE_LIST)
 	@+cmake $(CMAKE_FLAGS) -B $(BUILD_DIR) .
