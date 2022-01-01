@@ -21,7 +21,6 @@ set(target_SRC
 
 add_executable(target ${target_SRC})
 
-# Add pico_stdlib library which aggregates commonly used features
 target_link_libraries(target
   pico_tiny
 )
