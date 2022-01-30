@@ -21,9 +21,7 @@ set(target_SRC
 
 add_executable(target ${target_SRC})
 
-target_link_libraries(target
-  pico_tiny
-)
+target_link_libraries(target pico_tiny)
 
 # create map/bin/hex/uf2 file in addition to ELF.
 pico_add_extra_outputs(target)
