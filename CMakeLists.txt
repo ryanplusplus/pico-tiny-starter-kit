@@ -21,6 +21,8 @@ set(target_SRC
 
 add_executable(target ${target_SRC})
 
+target_compile_options(target PUBLIC -Wall -Wextra -Werror)
+
 target_link_libraries(target pico_tiny)
 
 # create map/bin/hex/uf2 file in addition to ELF.
