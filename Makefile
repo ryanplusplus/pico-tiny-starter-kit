@@ -10,8 +10,8 @@ CMAKE_FLAGS := \
   -DPICO_COMPILER=$(PICO_COMPILER) \
   -DCMAKE_C_COMPILER=$(shell which arm-none-eabi-gcc) \
   -DCMAKE_CXX_COMPILER=$(shell which arm-none-eabi-g++) \
-  -DPICO_BOARD_HEADER_DIRS=$(shell pwd)/board \
   -DPICO_COPY_TO_RAM=$(PICO_COPY_TO_RAM) \
+  -G="Unix Makefiles"
 
 ifeq ($(RELEASE),Y)
 CMAKE_FLAGS += -DCMAKE_BUILD_TYPE=Release
