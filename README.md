@@ -18,6 +18,10 @@ make jlink-upload
 ```
 
 ```shell
+make openocd-upload
+```
+
+```shell
 make ufs-upload
 ```
 

@@ -1,6 +1,6 @@
 SVD := lib/pico-sdk/src/rp2040/hardware_regs/rp2040.svd
 PICO_PLATFORM := rp2040
-PICO_BOARD := seeed_xiao_rp2040
+PICO_BOARD := pico
 PICO_COMPILER := pico_arm_gcc
 PICO_COPY_TO_RAM := 0
 
@@ -40,6 +40,10 @@ clean:
 %:
 	@+cmake --build $(BUILD_DIR) --target $@
 
+.PHONY: svd
+svd:
+	@cp $(SVD) $(BUILD_DIR)/target.svd
+
 .PHONY: suppress-jlink-edu-popup
 suppress-jlink-edu-popup:
 	@type lua > /dev/null 2>&1 && lua script/suppress-jlink-edu-popup.lua > /dev/null 2>&1 || true
@@ -70,8 +74,38 @@ $(BUILD_DIR)/erase.jlink:
 	@echo exit >> $@
 
 .PHONY: jlink-debug-deps
-jlink-debug-deps: all suppress-jlink-edu-popup
-	@cp $(SVD) $(BUILD_DIR)/target.svd
+jlink-debug-deps: all suppress-jlink-edu-popup svd
+
+.PHONY: $(BUILD_DIR)/upload.openocd
+$(BUILD_DIR)/upload.openocd:
+	@mkdir -p $(dir $@)
+	@echo source [find interface/cmsis-dap.cfg] > $@
+	@echo transport select swd >> $@
+	@echo adapter speed 4000 >> $@
+	@echo source [find target/rp2040.cfg] >> $@
+	@echo program $(BUILD_DIR)/target.hex verify reset exit >> $@
+
+.PHONY: openocd-upload
+openocd-upload: tools/openocd/build/bin/openocd all $(BUILD_DIR)/upload.openocd
+	@$< -f $(BUILD_DIR)/upload.openocd
+
+.PHONY: $(BUILD_DIR)/debug.openocd
+$(BUILD_DIR)/debug.openocd:
+	@mkdir -p $(dir $@)
+	@echo source [find interface/cmsis-dap.cfg] > $@
+	@echo transport select swd >> $@
+	@echo adapter speed 4000 >> $@
+	@echo source [find target/rp2040.cfg] >> $@
+	@echo init >> $@
+	@echo reset halt >> $@
+
+.PHONY: openocd-debug-deps
+openocd-debug-deps: all tools/openocd/build/bin/openocd svd $(BUILD_DIR)/debug.openocd
+
+tools/openocd/build/bin/openocd:
+	@rm -rf tools/openocd
+	@git clone https://github.com/raspberrypi/openocd.git --recursive --depth=1 tools/openocd
+	@(cd tools/openocd; ./bootstrap && ./configure --prefix=`pwd`/build && $(MAKE) && $(MAKE) install)
 
 .PHONY: uf2-upload
 uf2-upload: all
