@@ -1,6 +1,6 @@
 SVD := lib/pico-sdk/src/rp2040/hardware_regs/rp2040.svd
 PICO_PLATFORM := rp2040
-PICO_BOARD := pico
+PICO_BOARD := seeed_xiao_rp2040
 PICO_COMPILER := pico_arm_gcc
 PICO_COPY_TO_RAM := 0
 
