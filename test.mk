@@ -2,17 +2,18 @@ TARGET := tests
 BUILD_DIR := ./build/test
 
 INC_DIRS := \
-  lib/tiny/include \
+  lib/pico-tiny/lib/tiny/include \
+  lib/pico-tiny/lib/tiny/test/include \
   include \
   src \
 
 SRC_DIRS := \
-  lib/tiny/src \
-  lib/tiny/test/double \
+  lib/pico-tiny/lib/tiny/src \
+  lib/pico-tiny/lib/tiny/test/src \
   src/dummy \
   test \
 
 SRC_FILES := \
-  lib/tiny/test/test_runner.cpp \
+  lib/pico-tiny/lib/tiny/test/tests/test_runner.cpp \
 
-include lib/tiny/Makefile
+include lib/pico-tiny/lib/tiny/Makefile
