@@ -1,17 +1,22 @@
-SVD := lib/pico-sdk/src/rp2040/hardware_regs/rp2040.svd
-PICO_PLATFORM := rp2040
-PICO_BOARD := seeed_xiao_rp2040
-PICO_COMPILER := pico_arm_gcc
+PICO_PLATFORM := rp2350
+PICO_BOARD := seeed_xiao_rp2350
 PICO_COPY_TO_RAM := 0
 
-CMAKE_FLAGS := \
-  -DPICO_PLATFORM=$(PICO_PLATFORM) \
-  -DPICO_BOARD=$(PICO_BOARD) \
-  -DPICO_COMPILER=$(PICO_COMPILER) \
-  -DCMAKE_C_COMPILER=$(shell which arm-none-eabi-gcc) \
-  -DCMAKE_CXX_COMPILER=$(shell which arm-none-eabi-g++) \
-  -DPICO_COPY_TO_RAM=$(PICO_COPY_TO_RAM) \
-  -G="Unix Makefiles"
+MCU := $(shell echo $(PICO_PLATFORM) | cut -c 1-6)
+SVD := lib/pico-sdk/src/$(MCU)/hardware_regs/$(MCU).svd
+JLINK_DEVICE := $(shell echo $(MCU) | tr a-z A-Z)_M0_0
+
+ifeq ($(findstring riscv,$(PICO_PLATFORM)),riscv)
+ARCH := riscv
+else
+ARCH := arm
+endif
+
+ifeq ($(ARCH),riscv)
+SIZE := riscv32-unknown-elf-size
+else
+SIZE := arm-none-eabi-size
+endif
 
 ifeq ($(RELEASE),Y)
 CMAKE_FLAGS += -DCMAKE_BUILD_TYPE=Release
@@ -25,10 +30,16 @@ BUILD_DIR := build/$(BUILD_TYPE)
 
 export GNUMAKEFLAGS := --no-print-directory
 
+CMAKE_FLAGS := \
+  -DPICO_PLATFORM=$(PICO_PLATFORM) \
+  -DPICO_BOARD=$(PICO_BOARD) \
+  -DPICO_COPY_TO_RAM=$(PICO_COPY_TO_RAM) \
+  -G="Unix Makefiles"
+
 .PHONY: all
 all: $(BUILD_DIR)/Makefile
 	@+cmake --build $(BUILD_DIR)
-	@arm-none-eabi-size $(BUILD_DIR)/target.elf
+	@$(SIZE) $(BUILD_DIR)/target.elf
 
 $(BUILD_DIR)/Makefile: $(MAKEFILE_LIST)
 	@+cmake $(CMAKE_FLAGS) -B $(BUILD_DIR) .
@@ -50,7 +61,7 @@ suppress-jlink-edu-popup:
 
 .PHONY: jlink-upload
 jlink-upload: $(BUILD_DIR)/upload.jlink all suppress-jlink-edu-popup
-	@JLinkExe -NoGui 1 -device RP2040_M0_0 -if SWD -autoconnect 1 -speed 4000 -CommandFile $<
+	@JLinkExe -NoGui 1 -device $(JLINK_DEVICE) -if SWD -autoconnect 1 -speed 4000 -CommandFile $<
 
 .PHONY: $(BUILD_DIR)/upload.jlink
 $(BUILD_DIR)/upload.jlink:
@@ -63,7 +74,7 @@ $(BUILD_DIR)/upload.jlink:
 
 .PHONY: jlink-erase
 jlink-erase: $(BUILD_DIR)/erase.jlink suppress-jlink-edu-popup
-	@JLinkExe -NoGui 1 -device RP2040_M0_0 -if SWD -autoconnect 1 -speed 4000 -CommandFile $<
+	@JLinkExe -NoGui 1 -device $(JLINK_DEVICE) -if SWD -autoconnect 1 -speed 4000 -CommandFile $<
 
 .PHONY: $(BUILD_DIR)/erase.jlink
 $(BUILD_DIR)/erase.jlink:
@@ -82,7 +93,7 @@ $(BUILD_DIR)/upload.openocd:
 	@echo source [find interface/cmsis-dap.cfg] > $@
 	@echo transport select swd >> $@
 	@echo adapter speed 4000 >> $@
-	@echo source [find target/rp2040.cfg] >> $@
+	@echo source [find target/$(MCU).cfg] >> $@
 	@echo program $(BUILD_DIR)/target.hex verify reset exit >> $@
 
 .PHONY: openocd-upload
@@ -95,7 +106,7 @@ $(BUILD_DIR)/debug.openocd:
 	@echo source [find interface/cmsis-dap.cfg] > $@
 	@echo transport select swd >> $@
 	@echo adapter speed 4000 >> $@
-	@echo source [find target/rp2040.cfg] >> $@
+	@echo source [find target/$(MCU).cfg] >> $@
 	@echo init >> $@
 	@echo reset halt >> $@
 

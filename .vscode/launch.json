@@ -5,13 +5,24 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Target (JLink)",
+      "name": "Target (JLink RP2040)",
       "cwd": "${workspaceRoot}",
       "executable": "${workspaceFolder}/build/debug/target.elf",
       "request": "launch",
       "type": "cortex-debug",
       "servertype": "jlink",
       "device": "RP2040_M0_0",
+      "svdFile": "${workspaceFolder}/build/debug/target.svd",
+      "preLaunchTask": "target-jlink-debug-deps"
+    },
+    {
+      "name": "Target (JLink RP2350)",
+      "cwd": "${workspaceRoot}",
+      "executable": "${workspaceFolder}/build/debug/target.elf",
+      "request": "launch",
+      "type": "cortex-debug",
+      "servertype": "jlink",
+      "device": "RP2350_M0_0",
       "svdFile": "${workspaceFolder}/build/debug/target.svd",
       "preLaunchTask": "target-jlink-debug-deps"
     },
