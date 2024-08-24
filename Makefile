@@ -3,8 +3,9 @@ PICO_BOARD := seeed_xiao_rp2350
 PICO_COPY_TO_RAM := 0
 
 MCU := $(shell echo $(PICO_PLATFORM) | cut -c 1-6)
-SVD := lib/pico-sdk/src/$(MCU)/hardware_regs/$(MCU).svd
-JLINK_DEVICE := $(shell echo $(MCU) | tr a-z A-Z)_M0_0
+MCU_UPPERCASE := $(shell echo $(MCU) | tr a-z A-Z)
+SVD := lib/pico-sdk/src/$(MCU)/hardware_regs/$(MCU_UPPERCASE).svd
+JLINK_DEVICE := $(MCU_UPPER)_M0_0
 
 ifeq ($(findstring riscv,$(PICO_PLATFORM)),riscv)
 ARCH := riscv
@@ -34,7 +35,11 @@ CMAKE_FLAGS := \
   -DPICO_PLATFORM=$(PICO_PLATFORM) \
   -DPICO_BOARD=$(PICO_BOARD) \
   -DPICO_COPY_TO_RAM=$(PICO_COPY_TO_RAM) \
-  -G="Unix Makefiles"
+  -G="Unix Makefiles" \
+
+# Without this flag, pico SDK v2.0.0 does not generate a .hex file
+CMAKE_FLAGS += \
+  -DPICO_32BIT=1 \
 
 .PHONY: all
 all: $(BUILD_DIR)/Makefile
