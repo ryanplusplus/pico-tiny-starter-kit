@@ -12,6 +12,7 @@ SRC_DIRS := \
   lib/pico-tiny/lib/tiny/test/src \
   src/dummy \
   test \
+  test/dummy \
 
 SRC_FILES := \
   lib/pico-tiny/lib/tiny/test/tests/test_runner.cpp \
