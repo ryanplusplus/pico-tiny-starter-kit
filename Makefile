@@ -35,6 +35,7 @@ CMAKE_FLAGS := \
   -DPICO_PLATFORM=$(PICO_PLATFORM) \
   -DPICO_BOARD=$(PICO_BOARD) \
   -DPICO_COPY_TO_RAM=$(PICO_COPY_TO_RAM) \
+  -DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
   -G="Unix Makefiles" \
 
 # Without this flag, pico SDK v2.0.0 does not generate a .hex file
@@ -44,6 +45,7 @@ CMAKE_FLAGS += \
 .PHONY: all
 all: $(BUILD_DIR)/Makefile
 	@+cmake --build $(BUILD_DIR)
+	@cp $(BUILD_DIR)/compile_commands.json build/compile_commands.json
 	@$(SIZE) $(BUILD_DIR)/target.elf
 
 $(BUILD_DIR)/Makefile: $(MAKEFILE_LIST)

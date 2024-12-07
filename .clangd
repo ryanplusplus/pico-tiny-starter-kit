@@ -1,0 +1,12 @@
+CompileFlags:
+  CompilationDatabase: build
+
+---
+
+Diagnostics:
+  ClangTidy:
+    FastCheckFilter: None
+
+  Includes:
+    IgnoreHeader:
+      - CppUTest.*

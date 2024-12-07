@@ -8,4 +8,13 @@
     "editor.insertSpaces": true
   },
   "editor.formatOnSave": true,
+  "C_Cpp.intelliSenseEngine": "disabled",
+  "C_Cpp.hover": "disabled",
+  "C_Cpp.formatting": "disabled",
+  "clangd.checkUpdates": true,
+  "clangd.arguments": [
+    "--query-driver=/**/*",
+    "--header-insertion=never"
+  ],
+  "clangd.detectExtensionConflicts": false
 }
