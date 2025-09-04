@@ -5,7 +5,7 @@ PICO_COPY_TO_RAM := 0
 MCU := $(shell echo $(PICO_PLATFORM) | cut -c 1-6)
 MCU_UPPERCASE := $(shell echo $(MCU) | tr a-z A-Z)
 SVD := lib/pico-sdk/src/$(MCU)/hardware_regs/$(MCU_UPPERCASE).svd
-JLINK_DEVICE := $(MCU_UPPER)_M0_0
+JLINK_DEVICE := $(MCU_UPPERCASE)_M0_0
 
 ifeq ($(findstring riscv,$(PICO_PLATFORM)),riscv)
 ARCH := riscv
